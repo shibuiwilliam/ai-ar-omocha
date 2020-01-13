@@ -309,7 +309,7 @@ class SegmentationActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        analyzerThread.quitSafely()
+        analyzerThread.interrupt()
     }
 
     override fun onDestroy() {

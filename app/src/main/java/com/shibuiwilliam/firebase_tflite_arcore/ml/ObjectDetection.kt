@@ -58,6 +58,13 @@ class ObjectDetector(private val mode: Int,
         }
     }
 
+    private fun initializeObjectDetector(){
+        detector = when (options){
+            null -> FirebaseVision.getInstance().getOnDeviceObjectDetector()
+            else -> FirebaseVision.getInstance().getOnDeviceObjectDetector(options!!)
+        }
+    }
+
     private fun generateName(){
         when (Constants.OBJECT_DETECT_MODE){
             Constants.OBJECT_DETECT_STREAM_MODE -> detectorName = "Stream" + detectorName
@@ -73,13 +80,6 @@ class ObjectDetector(private val mode: Int,
     }
 
     internal fun getName(): String = detectorName
-
-    private fun initializeObjectDetector(){
-        detector = when (options){
-            null -> FirebaseVision.getInstance().getOnDeviceObjectDetector()
-            else -> FirebaseVision.getInstance().getOnDeviceObjectDetector(options!!)
-        }
-    }
 
     @SuppressLint("UnsafeExperimentalUsageError")
     fun processImage(image: FirebaseVisionImage): Task<List<FirebaseVisionObject>> {

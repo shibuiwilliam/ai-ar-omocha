@@ -502,7 +502,7 @@ class SceneformActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        callbackThread.quitSafely()
+        callbackThread.interrupt()
     }
 
     override fun onDestroy() {

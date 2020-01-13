@@ -167,8 +167,17 @@ class Globals: Application(){
         }
     }
 
+    fun closeAll(){
+        imageSegmentation!!.close()
+        objectDetector!!.close()
+        imageLabeler!!.close()
+        for ((_,v) in imageClassifierMap){
+            v.close()
+        }
+    }
     override fun onTerminate() {
         super.onTerminate()
+        closeAll()
     }
 
 }

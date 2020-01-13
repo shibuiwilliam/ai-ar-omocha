@@ -46,6 +46,8 @@ class MLActivity : AppCompatActivity() {
 
     private lateinit var mlProcessor: MLProcessor
 
+    private var mlThread = HandlerThread("MLThread")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
@@ -207,8 +209,7 @@ class MLActivity : AppCompatActivity() {
     }
 
     private fun buildPreviewConfig(screenSize: Size,
-                                   screenAspectRatio: Rational
-    ): PreviewConfig {
+                                   screenAspectRatio: Rational): PreviewConfig {
         return PreviewConfig
             .Builder()
             .apply {
@@ -222,10 +223,10 @@ class MLActivity : AppCompatActivity() {
 
     private fun buildAnalyzerConfig(): ImageAnalysisConfig {
         return ImageAnalysisConfig.Builder().apply {
-            val analyzerThread = HandlerThread("AnalysisThread").apply {
+            mlThread = HandlerThread("MLThread").apply {
                 start()
             }
-            setCallbackHandler(Handler(analyzerThread.looper))
+            setCallbackHandler(Handler(mlThread.looper))
             setImageReaderMode(ImageAnalysis.ImageReaderMode.ACQUIRE_LATEST_IMAGE)
         }.build()
     }
@@ -348,10 +349,12 @@ class MLActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
+        mlThread.interrupt()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        mlThread.quitSafely()
     }
 
 }

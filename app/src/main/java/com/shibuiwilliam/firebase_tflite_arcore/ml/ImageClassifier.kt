@@ -58,7 +58,6 @@ internal constructor(private val context: Context,
         Comparator<AbstractMap.SimpleEntry<String, Float>> { o1, o2 ->
             o1.value.compareTo(o2.value) })
 
-
     /**
      * Gets the top-K labels, to be shown in UI as the results.
      */
@@ -183,6 +182,19 @@ internal constructor(private val context: Context,
         Log.d(TAG, "Configured input & output data for the custom image classifier.")
     }
 
+    @Synchronized
+    private fun convertBitmapToResizedinBuffer(bitmap: Bitmap): ByteBuffer {
+        return ImageUtils.convertBitmapToResizedinBuffer(
+            bitmap,
+            numOfBytesPerChannel,
+            dimBatchSize,
+            dimPixelSize,
+            dimImgSize,
+            quantized,
+            127.5f,
+            127.5f)
+    }
+
     private fun generateClassificationInputs(image: Bitmap):FirebaseModelInputs{
         return FirebaseModelInputs
             .Builder()
@@ -261,18 +273,6 @@ internal constructor(private val context: Context,
         }
     }
 
-    @Synchronized
-    private fun convertBitmapToResizedinBuffer(bitmap: Bitmap): ByteBuffer {
-        return ImageUtils.convertBitmapToResizedinBuffer(
-            bitmap,
-            numOfBytesPerChannel,
-            dimBatchSize,
-            dimPixelSize,
-            dimImgSize,
-            quantized,
-            127.5f,
-            127.5f)
-    }
 
     @Synchronized
     internal fun getTopLabels(labelProbArray: Array<ByteArray>): List<String> {
