@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.firebase:firebase-ml-model-interpreter:22.0.1@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/dd0075d72cf634aea9c0b7c9df3faec6/firebase-ml-model-interpreter-22.0.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/dd0075d72cf634aea9c0b7c9df3faec6/firebase-ml-model-interpreter-22.0.1/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-ml-model-interpreter/22.0.1/178ca1b429ccc7020f857e15b35401621c64fa9d/firebase-ml-model-interpreter-22.0.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.concurrent:concurrent-listenablefuture:1.0.0-beta01@jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.concurrent/concurrent-listenablefuture/1.0.0-beta01/fa16925dddc6ddec5daadf125f13527e4d2a50af/concurrent-listenablefuture-1.0.0-beta01.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.concurrent/concurrent-listenablefuture/1.0.0-beta01/122593fc8c30dc4cdb9c370c9fcf6fb40122018a/concurrent-listenablefuture-1.0.0-beta01-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
