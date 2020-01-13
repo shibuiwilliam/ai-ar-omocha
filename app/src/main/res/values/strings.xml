@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Omocha</string>
+
+    <string name="title_activity_main">Omocha</string>
+    <string name="title_activity_sceneform">AR</string>
+    <string name="title_activity_ml">ML</string>
+    <string name="title_activity_segmentation">Segmentation</string>
+
+    <string name="saturn_image">Saturn image</string>
+    <string name="drawable_image_view">drawable image view</string>
+
+    <string name="to_ml">Go to ML</string>
+    <string name="to_ar">Go to AR</string>
+    <string name="to_segmentation">Go to Segmentation</string>
+</resources>
