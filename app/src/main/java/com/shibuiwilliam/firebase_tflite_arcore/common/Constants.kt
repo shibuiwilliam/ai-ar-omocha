@@ -47,42 +47,55 @@ object Constants {
     /**
      * Image Classifier Constants
      */
-    object MOBILENETV2_IMAGE_CLASSIFIER{
-        const val MODEL_NAME = "mobilenet_quant_v2_1_0_299_tflite"
-        const val IMAGENET_LABEL_PATH = "imagenet_labels.txt"
-        const val RESULTS_TO_SHOW = 5
-        const val DIM_BATCH_SIZE = 1
-        const val DIM_PIXEL_SIZE = 3
-
-        const val QUANTIZED = true
-        const val NUM_OF_BYTES_PER_CHANNEL = 1
-        const val DIM_IMG_SIZE = 299
-        const val AWAIT_MILLISECOND = 200L
+    enum class IMAGE_CLASSIFIER(
+        val modelName: String,
+        val imagenetLabelPath: String,
+        val resultsToShow: Int,
+        val dimBatchSize: Int,
+        val dimPixelSize: Int,
+        val numOfBytesPerChannel: Int,
+        val dimImgSize: Int,
+        val quantized: Boolean,
+        val awaitMillisecond: Long,
+        val imageMean: Float,
+        val imageStd: Float){
+        MOBILENETV2_IMAGE_CLASSIFIER(
+            "mobilenet_quant_v2_1_0_299_tflite",
+            "imagenet_labels.txt",
+            5,
+            1,
+            3,
+            1,
+            299,
+            true,
+            200L,
+            127.5f,
+            127.5f),
+        MNASNET_IMAGE_CLASSIFIER(
+            "mnasnet_1_3_224_tflite",
+            "imagenet_labels.txt",
+            3,
+            1,
+            3,
+            4,
+            224,
+            false,
+            300L,
+            127.5f,
+            127.5f),
+        CLASSIFIER_ACTIVE_MODEL(
+            MOBILENETV2_IMAGE_CLASSIFIER.modelName,
+            MOBILENETV2_IMAGE_CLASSIFIER.imagenetLabelPath,
+            MOBILENETV2_IMAGE_CLASSIFIER.resultsToShow,
+            MOBILENETV2_IMAGE_CLASSIFIER.dimBatchSize,
+            MOBILENETV2_IMAGE_CLASSIFIER.dimPixelSize,
+            MOBILENETV2_IMAGE_CLASSIFIER.numOfBytesPerChannel,
+            MOBILENETV2_IMAGE_CLASSIFIER.dimImgSize,
+            MOBILENETV2_IMAGE_CLASSIFIER.quantized,
+            MOBILENETV2_IMAGE_CLASSIFIER.awaitMillisecond,
+            MOBILENETV2_IMAGE_CLASSIFIER.imageMean,
+            MOBILENETV2_IMAGE_CLASSIFIER.imageStd)
     }
-
-    object MNASNET_IMAGE_CLASSIFIER{
-        const val MODEL_NAME = "mnasnet_1_3_224_tflite"
-        const val IMAGENET_LABEL_PATH = "imagenet_labels.txt"
-        const val RESULTS_TO_SHOW = 3
-        const val DIM_BATCH_SIZE = 1
-        const val DIM_PIXEL_SIZE = 3
-
-        const val QUANTIZED = false
-        const val NUM_OF_BYTES_PER_CHANNEL = 4
-        const val DIM_IMG_SIZE = 224
-        const val AWAIT_MILLISECOND = 300L
-    }
-
-    val CLASSIFIER_ACTIVE_MODEL = MOBILENETV2_IMAGE_CLASSIFIER
-    const val CLASSIFIER_MODEL_NAME = CLASSIFIER_ACTIVE_MODEL.MODEL_NAME
-    const val CLASSIFIER_IMAGENET_LABEL_PATH = CLASSIFIER_ACTIVE_MODEL.IMAGENET_LABEL_PATH
-    const val CLASSIFIER_RESULTS_TO_SHOW = CLASSIFIER_ACTIVE_MODEL.RESULTS_TO_SHOW
-    const val CLASSIFIER_DIM_BATCH_SIZE = CLASSIFIER_ACTIVE_MODEL.DIM_BATCH_SIZE
-    const val CLASSIFIER_DIM_PIXEL_SIZE = CLASSIFIER_ACTIVE_MODEL.DIM_PIXEL_SIZE
-    const val CLASSIFIER_QUANTIZED = CLASSIFIER_ACTIVE_MODEL.QUANTIZED
-    const val CLASSIFIER_NUM_OF_BYTES_PER_CHANNEL = CLASSIFIER_ACTIVE_MODEL.NUM_OF_BYTES_PER_CHANNEL
-    const val CLASSIFIER_DIM_IMG_SIZE = CLASSIFIER_ACTIVE_MODEL.DIM_IMG_SIZE
-    const val CLASSIFIER_AWAIT_MILLISECOND = CLASSIFIER_ACTIVE_MODEL.AWAIT_MILLISECOND
 
     const val IMAGE_FORMAT_YUV_420_888 = ImageFormat.YUV_420_888
     const val IMAGE_FORMAT_JPEG = ImageFormat.JPEG
@@ -92,12 +105,41 @@ object Constants {
     /**
      * object detections
      */
-    const val OBJECT_DETECT_STREAM_MODE = FirebaseVisionObjectDetectorOptions.STREAM_MODE
-    const val OBJECT_DETECT_SINGLE_MODE = FirebaseVisionObjectDetectorOptions.SINGLE_IMAGE_MODE
-    const val OBJECT_DETECT_MODE = OBJECT_DETECT_STREAM_MODE
-    const val OBJECT_DETECT_MULTIPLE = false
-    const val OBJECT_DETECT_CLASSIFICATION = false
-    const val OBJECT_DETECT_AWAIT_MILLISECOND = 200L
+    enum class OBJECT_DETECT(
+        val objectDetectName: String,
+        val objectDetectMode: Int,
+        val objectDetectMultiple: Boolean,
+        val objectDetectClassify: Boolean,
+        val awaitMillisecond: Long){
+        SINGLE_STREAM_OBJECT_DETECTOR(
+            "SINGLE_STREAM_OBJECT_DETECTOR",
+            FirebaseVisionObjectDetectorOptions.STREAM_MODE,
+            false,
+            false,
+            200L
+        ),
+        SINGLE_SINGLE_OBJECT_DETECTOR(
+            "SINGLE_SINGLE_OBJECT_DETECTOR",
+            FirebaseVisionObjectDetectorOptions.SINGLE_IMAGE_MODE,
+            false,
+            false,
+            200L
+        ),
+        MULTIPLE_STREAM_OBJECT_DETECTOR(
+            "MULTIPLE_STREAM_OBJECT_DETECTOR",
+            FirebaseVisionObjectDetectorOptions.STREAM_MODE,
+            true,
+            false,
+            200L
+        ),
+        MULTIPLE_SINGLE_OBJECT_DETECTOR(
+            "MULTIPLE_SINGLE_OBJECT_DETECTOR",
+            FirebaseVisionObjectDetectorOptions.SINGLE_IMAGE_MODE,
+            true,
+            false,
+            200L
+        )
+    }
 
     val OBJECT_DETECTION_DEFAULT_CATEGORIES: Map<Int, String> = mapOf(
         FirebaseVisionObject.CATEGORY_UNKNOWN to "Unknown",

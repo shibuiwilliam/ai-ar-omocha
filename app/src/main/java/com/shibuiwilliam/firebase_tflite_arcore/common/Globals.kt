@@ -25,10 +25,7 @@ class Globals: Application(){
         initializeAllImageClassifier(context)
 
         initializeObjectDetector(
-            Constants.OBJECT_DETECT_SINGLE_MODE,
-            Constants.OBJECT_DETECT_CLASSIFICATION,
-            Constants.OBJECT_DETECT_MULTIPLE,
-            Constants.OBJECT_DETECT_AWAIT_MILLISECOND)
+            Constants.OBJECT_DETECT.SINGLE_STREAM_OBJECT_DETECTOR)
 
         initializeImageLabeler(
             Constants.IMAGE_LABELER_MODE,
@@ -53,68 +50,44 @@ class Globals: Application(){
 
     fun initializeAllImageClassifier(context: Context){
         initializeImageClassifier(context,
-            Constants.MOBILENETV2_IMAGE_CLASSIFIER.MODEL_NAME,
-            Constants.MOBILENETV2_IMAGE_CLASSIFIER.IMAGENET_LABEL_PATH,
-            Constants.MOBILENETV2_IMAGE_CLASSIFIER.NUM_OF_BYTES_PER_CHANNEL,
-            Constants.MOBILENETV2_IMAGE_CLASSIFIER.DIM_BATCH_SIZE,
-            Constants.MOBILENETV2_IMAGE_CLASSIFIER.DIM_PIXEL_SIZE,
-            Constants.MOBILENETV2_IMAGE_CLASSIFIER.DIM_IMG_SIZE,
-            Constants.MOBILENETV2_IMAGE_CLASSIFIER.QUANTIZED,
-            Constants.MOBILENETV2_IMAGE_CLASSIFIER.RESULTS_TO_SHOW,
-            Constants.MOBILENETV2_IMAGE_CLASSIFIER.AWAIT_MILLISECOND)
+            Constants.IMAGE_CLASSIFIER.MOBILENETV2_IMAGE_CLASSIFIER)
         initializeImageClassifier(context,
-            Constants.MNASNET_IMAGE_CLASSIFIER.MODEL_NAME,
-            Constants.MNASNET_IMAGE_CLASSIFIER.IMAGENET_LABEL_PATH,
-            Constants.MNASNET_IMAGE_CLASSIFIER.NUM_OF_BYTES_PER_CHANNEL,
-            Constants.MNASNET_IMAGE_CLASSIFIER.DIM_BATCH_SIZE,
-            Constants.MNASNET_IMAGE_CLASSIFIER.DIM_PIXEL_SIZE,
-            Constants.MNASNET_IMAGE_CLASSIFIER.DIM_IMG_SIZE,
-            Constants.MNASNET_IMAGE_CLASSIFIER.QUANTIZED,
-            Constants.MNASNET_IMAGE_CLASSIFIER.RESULTS_TO_SHOW,
-            Constants.MNASNET_IMAGE_CLASSIFIER.AWAIT_MILLISECOND)
+            Constants.IMAGE_CLASSIFIER.MNASNET_IMAGE_CLASSIFIER)
     }
 
     fun initializeImageClassifier(context: Context,
-                                  remoteModelName: String ,
-                                  labelPath: String,
-                                  numOfBytesPerChannel: Int,
-                                  dimBatchSize: Int,
-                                  dimPixelSize: Int,
-                                  dimImgSize: Int,
-                                  quantized: Boolean,
-                                  resultsToShow: Int,
-                                  awaitMilliSecond: Long){
-        if (!imageClassifierMap.containsKey(remoteModelName)){
-            Log.i(TAG, "Loading ${remoteModelName}")
-            imageClassifierMap[remoteModelName] = ImageClassifier(
+                                  imageClassifier: Constants.IMAGE_CLASSIFIER){
+        if (!imageClassifierMap.containsKey(imageClassifier.modelName)){
+            Log.i(TAG, "Loading ${imageClassifier.modelName}")
+            imageClassifierMap[imageClassifier.modelName] = ImageClassifier(
                 context,
-                remoteModelName,
-                labelPath,
-                numOfBytesPerChannel,
-                dimBatchSize,
-                dimPixelSize,
-                dimImgSize,
-                quantized,
-                resultsToShow,
-                awaitMilliSecond
+                imageClassifier.modelName,
+                imageClassifier.imagenetLabelPath,
+                imageClassifier.numOfBytesPerChannel,
+                imageClassifier.dimBatchSize,
+                imageClassifier.dimPixelSize,
+                imageClassifier.dimImgSize,
+                imageClassifier.quantized,
+                imageClassifier.resultsToShow,
+                imageClassifier.awaitMillisecond,
+                imageClassifier.imageMean,
+                imageClassifier.imageStd
             )
         }
         else{
-            Log.i(TAG, "Using ${remoteModelName}")
+            Log.i(TAG, "Using ${imageClassifier.modelName}")
         }
     }
 
-    fun initializeObjectDetector(mode:Int,
-                                 enableClassification:Boolean,
-                                 multipleDetection: Boolean,
-                                 awaitMilliSeconds: Long){
+    fun initializeObjectDetector(objectDetect: Constants.OBJECT_DETECT){
         if (objectDetector == null){
             Log.i(TAG, "Loading object detector")
             objectDetector = ObjectDetector(
-                mode,
-                enableClassification,
-                multipleDetection,
-                awaitMilliSeconds)
+                objectDetect.objectDetectName,
+                objectDetect.objectDetectMode,
+                objectDetect.objectDetectClassify,
+                objectDetect.objectDetectMultiple,
+                objectDetect.awaitMillisecond)
         }
         else{
             Log.i(TAG, "Using object detector")

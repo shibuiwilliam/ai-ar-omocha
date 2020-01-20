@@ -15,19 +15,18 @@ import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 
-class ObjectDetector(private val mode: Int,
-                     private val enableClassification:Boolean,
-                     private val multipleDetection: Boolean,
-                     private val awaitMilliSeconds: Long) {
+class ObjectDetector(private val detectorName: String,
+                     val mode: Int,
+                     val enableClassification:Boolean,
+                     val multipleDetection: Boolean,
+                     val awaitMilliSecond: Long) {
     private val TAG = "ObjectDetectorProcessor"
 
     private var options: FirebaseVisionObjectDetectorOptions? = null
     private var detector: FirebaseVisionObjectDetector? = null
-    private var detectorName: String = "ObjectDetector"
     var initialized = false
 
     init {
-        generateName()
         configureOptions()
         initializeObjectDetector()
         initialized = true
@@ -65,20 +64,6 @@ class ObjectDetector(private val mode: Int,
         }
     }
 
-    private fun generateName(){
-        when (Constants.OBJECT_DETECT_MODE){
-            Constants.OBJECT_DETECT_STREAM_MODE -> detectorName = "Stream" + detectorName
-            Constants.OBJECT_DETECT_SINGLE_MODE -> detectorName = "Single" + detectorName
-            else -> detectorName = detectorName
-        }
-        if (multipleDetection){
-            detectorName = "Multiple" + detectorName
-        }
-        if (enableClassification){
-            detectorName += "Classifier"
-        }
-    }
-
     internal fun getName(): String = detectorName
 
     @SuppressLint("UnsafeExperimentalUsageError")
@@ -91,7 +76,7 @@ class ObjectDetector(private val mode: Int,
 
     @SuppressLint("UnsafeExperimentalUsageError")
     fun processImageAwait(image: FirebaseVisionImage,
-                          awaitMilliSeconds: Long=this.awaitMilliSeconds): List<FirebaseVisionObject>? {
+                          awaitMilliSeconds: Long=this.awaitMilliSecond): List<FirebaseVisionObject>? {
         if (!initialized || detector == null){
             initializeObjectDetector()
         }

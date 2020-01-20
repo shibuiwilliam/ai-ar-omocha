@@ -32,7 +32,7 @@ class MLActivity : AppCompatActivity() {
     private lateinit var overlay: GraphicOverlay
 
     private var facingCameraX = Constants.FACING_CAMERAX
-    private val objectDetectAwaitSecond = Constants.OBJECT_DETECT_AWAIT_MILLISECOND
+    private var objectDetectAwaitSecond = 200L
     private val imageLabelerAwaidSecond = Constants.IMAGE_LABELER_AWAIT_MILLISECOND
 
     private lateinit var mlTargetSpinner: Spinner
@@ -61,6 +61,7 @@ class MLActivity : AppCompatActivity() {
             }
             setContentView(R.layout.activity_ml)
             initializeGlobals()
+            objectDetectAwaitSecond = globals!!.objectDetector!!.awaitMilliSecond
             mlProcessor = MLProcessor(globals!!)
 
             cameraTextureView = findViewById(R.id.cameraTextureView)
@@ -94,8 +95,8 @@ class MLActivity : AppCompatActivity() {
 
     private fun updateActiveModelName(){
         activeModelName = when(mlClassifier){
-            "Quant ImageNet" -> Constants.MOBILENETV2_IMAGE_CLASSIFIER.MODEL_NAME
-            "Float ImageNet" -> Constants.MNASNET_IMAGE_CLASSIFIER.MODEL_NAME
+            "Quant ImageNet" -> Constants.IMAGE_CLASSIFIER.MOBILENETV2_IMAGE_CLASSIFIER.modelName
+            "Float ImageNet" -> Constants.IMAGE_CLASSIFIER.MNASNET_IMAGE_CLASSIFIER.modelName
             "Image Labeler" -> "Image Labeler"
             else -> "Image Labeler"
         }
@@ -238,8 +239,8 @@ class MLActivity : AppCompatActivity() {
                     380,
                     Color.TRANSPARENT)
                 when (activeModelName) {
-                    Constants.MOBILENETV2_IMAGE_CLASSIFIER.MODEL_NAME,
-                    Constants.MNASNET_IMAGE_CLASSIFIER.MODEL_NAME -> {
+                    Constants.IMAGE_CLASSIFIER.MOBILENETV2_IMAGE_CLASSIFIER.modelName,
+                    Constants.IMAGE_CLASSIFIER.MNASNET_IMAGE_CLASSIFIER.modelName -> {
                         mlProcessor.classifyAwait(
                             image,
                             overlay,
@@ -259,8 +260,8 @@ class MLActivity : AppCompatActivity() {
             }
             Constants.MLTARGET_OBJECT_DETECTION -> {
                 when (activeModelName) {
-                    Constants.MOBILENETV2_IMAGE_CLASSIFIER.MODEL_NAME,
-                    Constants.MNASNET_IMAGE_CLASSIFIER.MODEL_NAME -> {
+                    Constants.IMAGE_CLASSIFIER.MOBILENETV2_IMAGE_CLASSIFIER.modelName,
+                    Constants.IMAGE_CLASSIFIER.MNASNET_IMAGE_CLASSIFIER.modelName -> {
                         mlProcessor.classifyFromDetectionAwait(
                             image,
                             rotationDegrees,
@@ -288,8 +289,8 @@ class MLActivity : AppCompatActivity() {
                     else ImageUtils.cropImageFromPoints(bitmap, drawView.points)
 
                 when (activeModelName) {
-                    Constants.MOBILENETV2_IMAGE_CLASSIFIER.MODEL_NAME,
-                    Constants.MNASNET_IMAGE_CLASSIFIER.MODEL_NAME -> {
+                    Constants.IMAGE_CLASSIFIER.MOBILENETV2_IMAGE_CLASSIFIER.modelName,
+                    Constants.IMAGE_CLASSIFIER.MNASNET_IMAGE_CLASSIFIER.modelName -> {
                         mlProcessor.classifyAwait(
                             croppedImage!!,
                             overlay,

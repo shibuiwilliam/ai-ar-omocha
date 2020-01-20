@@ -36,7 +36,7 @@ class ImageClassifier
  */
 @Throws(FirebaseMLException::class)
 internal constructor(private val context: Context,
-                     private val remoteModelName: String ,
+                     private val modelName: String ,
                      private val labelPath: String,
                      private val numOfBytesPerChannel: Int,
                      private val dimBatchSize: Int,
@@ -44,10 +44,11 @@ internal constructor(private val context: Context,
                      private val dimImgSize: Int,
                      private val quantized: Boolean,
                      private val resultsToShow: Int,
-                     private val awaitMilliSeconds: Long) {
+                     private val awaitMilliSeconds: Long,
+                     private val imageMean: Float,
+                     private val imageStd: Float) {
     private val TAG = "ImageClassifier"
-
-
+    
     private var interpreter: FirebaseModelInterpreter? = null
     var initialized: Boolean = false
     private lateinit var dataOptions: FirebaseModelInputOutputOptions
@@ -77,7 +78,7 @@ internal constructor(private val context: Context,
                                    fill: String = "0"): String =
         if (str.length >= max) str.substring(0, max) else str + fill.repeat(max - str.length)
 
-    internal fun getRemoteModeName(): String = remoteModelName
+    internal fun getRemoteModeName(): String = modelName
 
     init {
         initialize()
@@ -95,7 +96,7 @@ internal constructor(private val context: Context,
     }
 
     private fun initializeModel(){
-        val remoteModel = FirebaseCustomRemoteModel.Builder(remoteModelName).build()
+        val remoteModel = FirebaseCustomRemoteModel.Builder(modelName).build()
         val firebaseModelManager = FirebaseModelManager.getInstance()
 
         firebaseModelManager
@@ -115,7 +116,7 @@ internal constructor(private val context: Context,
                     }
                 Utils.logAndToast(context,
                     TAG,
-                    "Downloading ${remoteModelName} file.",
+                    "Downloading ${modelName} file.",
                     "i",
                     Toast.LENGTH_SHORT,
                     Gravity.TOP)
@@ -128,12 +129,12 @@ internal constructor(private val context: Context,
                         FirebaseModelInterpreterOptions
                             .Builder(
                                 FirebaseCustomRemoteModel
-                                    .Builder(remoteModelName)
+                                    .Builder(modelName)
                                     .build()
                             ).build()
                     Utils.logAndToast(context,
                         TAG,
-                        "Successfully downloaded ${remoteModelName} file.",
+                        "Successfully downloaded ${modelName} file.",
                         "i",
                         Toast.LENGTH_SHORT,
                         Gravity.TOP)
@@ -191,8 +192,8 @@ internal constructor(private val context: Context,
             dimPixelSize,
             dimImgSize,
             quantized,
-            127.5f,
-            127.5f)
+            imageMean,
+            imageStd)
     }
 
     private fun generateClassificationInputs(image: Bitmap):FirebaseModelInputs{

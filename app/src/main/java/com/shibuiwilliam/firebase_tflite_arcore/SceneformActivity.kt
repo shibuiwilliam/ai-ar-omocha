@@ -348,13 +348,13 @@ class SceneformActivity : AppCompatActivity() {
             if (copyResult == PixelCopy.SUCCESS) {
                 Log.i(TAG, "Copied ArFragment view.")
                 val classified = globals!!
-                    .imageClassifierMap[Constants.CLASSIFIER_MODEL_NAME]!!
+                    .imageClassifierMap[Constants.IMAGE_CLASSIFIER.CLASSIFIER_ACTIVE_MODEL.modelName]!!
                     .classifyAwait(bitmap)
                 if (classified == null){
                     return@request
                 }
                 val results = globals!!
-                    .imageClassifierMap[Constants.CLASSIFIER_MODEL_NAME]!!
+                    .imageClassifierMap[Constants.IMAGE_CLASSIFIER.CLASSIFIER_ACTIVE_MODEL.modelName]!!
                     .extractResults(classified!!)
 
                 Utils.logAndToast(
@@ -404,13 +404,13 @@ class SceneformActivity : AppCompatActivity() {
                 Log.i(TAG, "Cropped ArFragment view.")
 
                 val classified = globals!!
-                    .imageClassifierMap[Constants.CLASSIFIER_MODEL_NAME]!!
+                    .imageClassifierMap[Constants.IMAGE_CLASSIFIER.CLASSIFIER_ACTIVE_MODEL.modelName]!!
                     .classifyAwait(croppedBitmap)
                 if (classified == null){
                     return@request
                 }
                 val results = globals!!
-                    .imageClassifierMap[Constants.CLASSIFIER_MODEL_NAME]!!
+                    .imageClassifierMap[Constants.IMAGE_CLASSIFIER.CLASSIFIER_ACTIVE_MODEL.modelName]!!
                     .extractResults(classified!!)
 
                 Utils.logAndToast(
